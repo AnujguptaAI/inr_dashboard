@@ -92,10 +92,10 @@ with col2:
             f"${fii_flow}B"
         ],
         "Market Impact": [
-            "🔴 Negative (Depreciation)" if oil_price > 107 else "🟢 Positive/Stable",
-            "🔴 Negative (Drain)" if trade_balance < -25 else "🟢 Within Norms",
-            "🟢 Positive (Buffer)" if gold_reserves > 48 else "🟡 Low Buffer",
-            "🟢 Positive (Inflow)" if fii_flow > 0 else "🔴 Negative (Outflow)"
+            "Negative (Depreciation)" if oil_price > 107 else "Positive/Stable",
+            "Negative (Drain)" if trade_balance < -25 else "Within Norms",
+            "Positive (Buffer)" if gold_reserves > 48 else "Low Buffer",
+            "Positive (Inflow)" if fii_flow > 0 else "Negative (Outflow)"
         ]
     }
     st.table(pd.DataFrame(data))
