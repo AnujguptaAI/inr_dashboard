@@ -2,6 +2,15 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
+# --- CONFIGURATION ---
+st.set_page_config(page_title="INR Value Simulator", layout="wide")
+
+st.title("Indian Rupee (INR) Value Predictor")
+st.markdown("""
+This dashboard simulates how the Indian Rupee reacts to global and domestic economic shifts. 
+Adjust the sliders in the sidebar to see the impact.
+""")
+
 # --- CALIBRATED LOGIC FOR MAY 15, 2026 ---
 def calculate_inr(oil, trade, gold_res, fii):
     # The new 'floor' as of today's market opening
@@ -62,3 +71,11 @@ fig = go.Figure(go.Indicator(
     }
 ))
 st.plotly_chart(fig)
+
+# --- DEPENDENCY SECTION ---
+st.divider()
+st.subheader("The Correlation Matrix")
+st.write("""
+- **Oil vs Trade:** As Oil prices rise, the 'Trade Balance' will naturally slide further into a deficit because India imports 85% of its oil.
+- **Gold vs INR:** Gold reserves act as a 'Safe Haven'. During global volatility, higher gold reserves prevent a free-fall of the Rupee.
+""")
