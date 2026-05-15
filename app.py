@@ -56,21 +56,54 @@ if current_val > 98:
     st.error("⚠️ Critical Level: Rupee approaching the psychological 100-mark. Market expects a Repo Rate hike.")
 
 # --- DISPLAY (Metric & Gauge) ---
-st.metric(label="Simulated USD/INR Exchange Rate", value=f"₹{current_val}")
+with col1:
+    st.metric(label="Simulated USD/INR Exchange Rate", value=f"₹{current_val}")
+    
+    fig = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = current_val,
+        gauge = {
+            'axis': {'range': [90, 105]}, # Shifted range up to reflect current crisis
+            'steps' : [
+                {'range': [90, 94], 'color': "lightgreen"},
+                {'range': [94, 97], 'color': "orange"},
+                {'range': [97, 105], 'color': "red"}],
+            'threshold': {'line': {'color': "black", 'width': 4}, 'thickness': 0.75, 'value': 95.94}
+        }
+    ))
+    st.plotly_chart(fig)
 
-fig = go.Figure(go.Indicator(
-    mode = "gauge+number",
-    value = current_val,
-    gauge = {
-        'axis': {'range': [90, 105]}, # Shifted range up to reflect current crisis
-        'steps' : [
-            {'range': [90, 94], 'color': "lightgreen"},
-            {'range': [94, 97], 'color': "orange"},
-            {'range': [97, 105], 'color': "red"}],
-        'threshold': {'line': {'color': "black", 'width': 4}, 'thickness': 0.75, 'value': 95.94}
+with col2:
+    st.subheader("Factor Breakdown")
+    
+    # Logic calibrated for May 2026 crisis environment
+    data = {
+        "Factor": [
+            "Brent Crude Price", 
+            "Trade Balance", 
+            "Gold Reserves", 
+            "FII Flows"
+        ],
+        "Current Setting": [
+            f"${oil_price}/bbl", 
+            f"${trade_balance}B", 
+            f"${gold_reserves}B", 
+            f"${fii_flow}B"
+        ],
+        "Market Impact": [
+            "🔴 Negative (Depreciation)" if oil_price > 107 else "🟢 Positive/Stable",
+            "🔴 Negative (Drain)" if trade_balance < -25 else "🟢 Within Norms",
+            "🟢 Positive (Buffer)" if gold_reserves > 48 else "🟡 Low Buffer",
+            "🟢 Positive (Inflow)" if fii_flow > 0 else "🔴 Negative (Outflow)"
+        ]
     }
-))
-st.plotly_chart(fig)
+    st.table(pd.DataFrame(data))
+    
+    st.info(f"""
+    **Current Analysis:** 
+    The Rupee is currently benchmarked at a base of **₹95.94**. 
+    At this level, market sensitivity is 2.5x higher than historical averages.
+    """)
 
 # --- DEPENDENCY SECTION ---
 st.divider()
