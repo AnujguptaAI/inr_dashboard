@@ -56,6 +56,7 @@ if current_val > 98:
     st.error("⚠️ Critical Level: Rupee approaching the psychological 100-mark. Market expects a Repo Rate hike.")
 
 # --- DISPLAY (Metric & Gauge) ---
+col1, col2 = st.columns([1, 1])
 with col1:
     st.metric(label="Simulated USD/INR Exchange Rate", value=f"₹{current_val}")
     
