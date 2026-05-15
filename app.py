@@ -12,39 +12,29 @@ Adjust the sliders in the sidebar to see the impact.
 """)
 
 # --- CALIBRATED LOGIC FOR MAY 15, 2026 ---
-def calculate_inr(oil, trade, gold_res, fii):
-    # The new 'floor' as of today's market opening
+def calculate_inr(oil, trade, gold, fii):
     base_inr = 95.94 
+    oil_impact = (oil - 106) * 0.05
+    trade_impact = (trade + 33) * -0.10  # Calibrated for larger deficit values
+    gold_impact = (gold - 115) * -0.01 
+    fii_impact = (fii + 17) * -0.15      # Calibrated for larger outflow values
     
-    # 1. Oil Price Impact: 
-    # Current Brent is ~$107. Every $1 move now has a higher 
-    # psychological impact on the Rupee compared to when it was $80.
-    oil_impact = (oil - 107) * 0.08 
-    
-    # 2. Trade Balance Impact: 
-    # India's monthly deficit is widening toward $25B-$30B.
-    trade_impact = (trade + 25) * -0.20 
-    
-    # 3. Gold Reserves: 
-    # RBI reserves have dipped to ~$691B. Gold acts as a buffer.
-    gold_impact = (gold_res - 45) * -0.03 
-    
-    # 4. FII Flows (The 'Panic' Button): 
-    # Sustained selling of ~Rs 2 lakh crore. Inflows are rare now.
-    fii_impact = fii * -0.45 
-    
-    final_inr = base_inr + oil_impact + trade_impact + gold_impact + fii_impact
-    return round(final_inr, 2)
+    return round(base_inr + oil_impact + trade_impact + gold_impact + fii_impact, 2)
 
 # --- UPDATED INPUTS (Sidebar) ---
 st.sidebar.header("Real-Time Factors (May 2026)")
 
-# Set defaults to today's actual market rates
-oil_price = st.sidebar.slider("Brent Crude (USD/Barrel)", 80, 140, 107)
-trade_balance = st.sidebar.slider("Trade Deficit (USD Billion)", -50, 0, -25)
-gold_reserves = st.sidebar.slider("Gold Reserves Value (USD Billion)", 30, 80, 48)
-fii_flow = st.sidebar.slider("Net FII Flow (USD Billion)", -15, 5, -2)
+# Brent Crude: Range widened to account for recent $126 peak
+oil_price = st.sidebar.slider("Brent Crude (USD/Barrel)", 60, 150, 106)
 
+# Trade Deficit: Monthly values are now much higher than $25B
+trade_balance = st.sidebar.slider("Monthly Trade Deficit (USD Billion)", -60, 0, -33)
+
+# Gold Reserves: Now valued at over $100B due to high gold prices
+gold_reserves = st.sidebar.slider("Gold Reserves (USD Billion)", 50, 150, 115)
+
+# Net FII Flow: Monthly outflows have crossed $10B-$15B in crash months
+fii_flow = st.sidebar.slider("Monthly Net FII Flow (USD Billion)", -25, 10, -17)
 current_val = calculate_inr(oil_price, trade_balance, gold_reserves, fii_flow)
 
 # --- PHENOMENON ALERTS ---
